@@ -35,7 +35,7 @@
 %---------------------------------------------------------------------------
 %	TITLE SECTION 
 %---------------------------------------------------------------------------
-\title{Efficient heritability estimation of \\ imaging derived phenotypes} % Poster title
+\title{Heritability of subcortical volumes \\ in the adolescent brain} % Poster title
 \author{Christian Coffman Advised by: Dr. Saonli Basu and Dr. Eric Feczko} % Author(s)
 \institute{Division of Biostatistics, University of Minnesota} % Institution(s)
 %----------------------------------------------------------------------------
@@ -57,35 +57,30 @@
 %	LEFT
 %---------------------------------------------------------------------------
 \begin{block}{Introduction and Objectives}
-
-Through recent decades there has been a dramatic increase in the occurrence of behavioral health issues especially in adolescence. This has lead to a correspondingly large increase in the interest for understanding the development of the brain in adolescents. The Adolescent Brain Cognitive Development (ABCD) study is the largest long term study of the adolescent brain. Recent efforts in understanding functional connectivity focusing on graph based methods have shown different age effects throughout the brain that might be important for patterns of development in the adolescent brain. The current study focuses on evaluating the heritability of functional brain phenotypes. The large dimensionality of brain derived phenotypes requires an efficient method to estimate heritability. Here, we implement a recently development Method of Moments estaimtor (AdjHE) for heritability that dramatically increases efficiency and makes a brain wide heritability analysis feasible. 
+Clinically diagonosoed psychological disorders are associated with heritable regional subcortical brain volumes (rSBVs) in adults \cite{koolschijn_brain_2009, zhao_heritability_2019}. To see if the same regions are heritable in adolescents, we analyzed rSBVs in the Adolescent Brain Cognitive Development study (ABCD) whih has 10,000+ structrural fMRI scans. Estimating Imaging derived phenotypes taken across multiple sites is complicated by confounding differences between sites \cite{bayer_site_2022}. In addition, sites have different distributions of subjects with respect to their genetic ancestries. Currently, no method of moments (MOM) estimator accounts for both influences which is important to get unbiased estimates.
 \end{block}
 
-\vspace{1in}
 
 \begin{block}{Methods}
-Existing MOM estimators can create severely biased heritability estimates when diverse sub populations exist. Adjusting for sub populations using PC's and other covariates. The AdjHE method has two steps:
 \begin{enumerate}
-    \item $y_i = C_i\gamma + \epsilon_i$, A regression on the mean level of the trait
-    \item Estimate the remaining variance of the phenotype y assuming the structure of heritability remains unchanged after regressing out the mean
+    \item AdjHE is closed form solution to 2nd moment \cite{lin_estimating_2022}
+    \item Compared to existing methods for site effects theoretically and via simulations see (Figure \ref{fig:03-03})
+    \item Estimated on rSBV's in ABCD (see Figure \ref{fig:brain})
 \end{enumerate}
 
 \end{block}
 
-%\begin{block}{Preprocessing}
-%\begin{itemize}
-%    \item Plink filter numbers 
-%     \item Imputation filter settings
-
-%\end{itemize}
-%\end{block}
+\begin{block}{Estimation Time}
+	\begin{figure}
+		\includegraphics[width=\textwidth]{Graphics/compare_time.png}
+		\caption{\centering
+			Time for estimation on increasinly large simulated datsets for AdjHE (blue), AdjHE with random site effects (light blue), and GCTA (red)	
+		}
+	\end{figure}
+\end{block}
 
 \vspace{1in}
 
-\begin{alertblock}{Contact}
-Email: coffm049@umn.edu \\
-Github: https://github.com/coffm049
-\end{alertblock}
 
 \end{column} % End of the first column
 \begin{column}{\sepwid}\end{column} % Empty spacer column
@@ -93,24 +88,27 @@ Github: https://github.com/coffm049
 %----------------------------------------------------------------------------
 %        MIDDLE
 %----------------------------------------------------------------------------
-\begin{alertblock}{Heritability Estimation  Comparison}
+\begin{alertblock}{rSBV Heritability}
 \begin{figure}
-\includegraphics[width = 0.75\textwidth]{Graphics/AdjHE_GCTA_PCs.png}
-\caption{Heritability estimates using GCTA and AdjHE methods controlling for differning numbers of demographic covariates (facet title) and principal components (x axes).}
-\label{fig:power}
+\includegraphics[width = 1\textwidth]{Graphics/AdjHE_RE_brain.png}
+\caption{Heritability of rSBVs visualized on the Conte brain template. Yellow indicates high heritability, red indicates low.}
+\label{fig:brain}
 \end{figure}
-\end{alertblock} 
+\end{alertblock}
 %----------------------------------------------------------------------------
+\vspace{2cm}
 \begin{figure}
-  \begin{minipage}[c]{0.67\textwidth}
-    \includegraphics[width=\textwidth, height=0.6\textwidth]{Graphics/global_10pcs.png}
-  \end{minipage}\hfill
-  \begin{minipage}[c]{0.3\textwidth}
+    \includegraphics[width=0.66\textwidth]{Graphics/Adding_sites_n_clusts_het.png}
     \caption{\centering
-       (Left) Measured global cranial volume for each of the 22 sites from the ABCD study. (Right) Residualized global cranial volume measurements after controlling for the first 10 principal genetic components.
+       Simulation estimates under 2 and 25 sites (left and right columns) and 1 and 2 genetic ancestries (top and bottom rows). Estimates are compared between the proposed method "AdjHE\_RE" and multiple other methods including GCTA.
     } \label{fig:03-03}
-  \end{minipage}
 \end{figure}
+
+\begin{alertblock}{Contact}
+Email: coffm049@umn.edu \\
+Github: https://github.com/coffm049
+\end{alertblock}
+
 
 \end{column} % End of the second column
 \begin{column}{\sepwid}\end{column} % Empty spacer column
@@ -119,13 +117,15 @@ Github: https://github.com/coffm049
 %	RIGHT
 %----------------------------------------------------------------------------
 \begin{block}{Discussion}
-Establishing a set of covariates is crucial in establishing unbiased estimates of heritability. In an effort to establish an appropriate set of covariates we've developed an efficient looping method and are looking for convergence between AdjHE estimates of heritability and the "gold-standard" for heritability estimation which is also less prone to bias when not including the best set of covariates. The imaging derived phenotypes discussed in this study are expected to have very small heritability and difficulties in identifiability between GRMs and the identity matrix necessitate a large sample size. 
+The new estimator broadens unbiased estimation to conditions where genetic ancestries and site effects vary between sites. We've shown the new estimator is unbiasedness theoretically and through simulations. In addition, we found multiple regions with significant heritability in the adolescent brain. We next hope to extend this method to multivariate traits.
 \end{block}
+
+\vspace{3cm}
 
 \begin{block}{ABCD Demographics}
 \begin{figure}
     \centering
-    \includegraphics[width = 0.6\textwidth]{Graphics/Table1.png}
+    \includegraphics[width = 1\textwidth]{Graphics/Table1.png}
     \caption{Descriptions of key demographic variables in the ABCD dataset.
 }
     \label{tab:table}
@@ -137,17 +137,18 @@ Establishing a set of covariates is crucial in establishing unbiased estimates o
 %----------------------------------------------------------------------------
 %	REFERENCES
 %----------------------------------------------------------------------------
-%\begin{block}{References}
-%\bibliographystyle{plain}
-%\bibliography{Mycoll}
-%Public health assignment prompt
-%\end{block}
+\begin{block}{References}
+	\begin{tiny}
+		\bibliographystyle{abbrv}
+		\bibliography{Mycoll}
+	\end{tiny}
+\end{block}
 
 %----------------------------------------------------------------------------
 %	ACKNOWLEDGEMENTS
 %----------------------------------------------------------------------------
 \begin{block}{Acknowledgements}
-This research was funded through a T32 grant (GM132063).
+This research was funded through an NIH T32 grant (GM132063).
 \end{block}
 
 %----------------------------------------------------------------------------
@@ -159,3 +160,5 @@ This research was funded through a T32 grant (GM132063).
 \end{columns} % End of all the columns in the poster
 \end{frame} % End of the enclosing frame
 \end{document}
+
+
