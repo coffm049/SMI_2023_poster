@@ -64,23 +64,36 @@ Clinically diagonosoed psychological disorders are associated with heritable reg
 \begin{block}{Methods}
 \begin{enumerate}
     \item AdjHE is closed form solution to 2nd moment \cite{lin_estimating_2022}
+	    \begin{align*}
+		    EY^* & = X_C\beta_C + X_G\beta_G + X_s\beta_S \tag{1st Moment}\\
+		    Y &= Q_cY = Y - X_C\hat \beta_C \tag{Residualize} \\
+		    YY' &= A\sigma_G^2 + S\sigma_S^2 + I\sigma_E^2 \tag{2nd Moment}
+	    \end{align*}
     \item Compared to existing methods for site effects theoretically and via simulations see (Figure \ref{fig:03-03})
+	    \begin{align*}
+		    E\hat h^2 & = \frac{tr(A-I)T(EYY)T}{tr(A-I)T}
+	    \end{align*}
     \item Estimated on rSBV's in ABCD (see Figure \ref{fig:brain})
 \end{enumerate}
 
+\textbf{Existing methods compared}
+\begin{itemize}
+    \item Site wise de-meaning
+	$$ T := Q_s $$
+    \item Adjusted residual adjustment 
+    	$$ T := Q_{C,S} $$
+    \item Combat 
+	\begin{align*}
+		T = T_1T_2 \\
+		T_2 \stackrel{p}{\to} Q_S \\
+		T_1 \stackrel{p}{\to} I \\
+	\end{align*}
+    \item Covbat- Same as Combat followed by additional transformation
+\end{itemize}
+
+
+
 \end{block}
-
-\begin{block}{Estimation Time}
-	\begin{figure}
-		\includegraphics[width=\textwidth]{Graphics/compare_time.png}
-		\caption{\centering
-			Time for estimation on increasinly large simulated datsets for AdjHE (blue), AdjHE with random site effects (light blue), and GCTA (red)	
-		}
-	\end{figure}
-\end{block}
-
-\vspace{1in}
-
 
 \end{column} % End of the first column
 \begin{column}{\sepwid}\end{column} % Empty spacer column
@@ -97,12 +110,15 @@ Clinically diagonosoed psychological disorders are associated with heritable reg
 \end{alertblock}
 %----------------------------------------------------------------------------
 \vspace{2cm}
+\begin{block}{Simulations}
 \begin{figure}
-    \includegraphics[width=0.66\textwidth]{Graphics/Adding_sites_n_clusts_het.png}
+    \includegraphics[width=0.55\textwidth]{Graphics/Adding_sites_n_clusts_het.png}
+    \includegraphics[width=0.44\textwidth]{Graphics/compare_time.png}
     \caption{\centering
-       Simulation estimates under 2 and 25 sites (left and right columns) and 1 and 2 genetic ancestries (top and bottom rows). Estimates are compared between the proposed method "AdjHE\_RE" and multiple other methods including GCTA.
+	    (Left) Simulation estimates under 2 and 25 sites (left and right columns) and 1 and 2 genetic ancestries (top and bottom rows). Estimates are compared between the proposed method "AdjHE\_RE" and multiple other methods including GCTA. (Right) Time for analysis for multiple sample sizes for AdjHE (blue), AdjHE with random site effect (light blue), and GCTA (red).
     } \label{fig:03-03}
 \end{figure}
+\end{block}
 
 \begin{alertblock}{Contact}
 Email: coffm049@umn.edu \\
@@ -117,7 +133,7 @@ Github: https://github.com/coffm049
 %	RIGHT
 %----------------------------------------------------------------------------
 \begin{block}{Discussion}
-The new estimator broadens unbiased estimation to conditions where genetic ancestries and site effects vary between sites. We've shown the new estimator is unbiasedness theoretically and through simulations. In addition, we found multiple regions with significant heritability in the adolescent brain. We next hope to extend this method to multivariate traits.
+	The new estimator \textbf{broadens unbiased estimation} to conditions where genetic ancestries and site effects vary between sites. We've shown the new estimator is unbiasedness theoretically and through simulations while providing at least \textbf{3x speed up} in estimation. In addition, we found \textbf{multiple regions with significant heritability} in the adolescent brain. We next hope to extend this method to multivariate traits.
 \end{block}
 
 \vspace{3cm}
